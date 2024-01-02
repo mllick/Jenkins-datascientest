@@ -69,8 +69,11 @@ stage('Deploiement en dev'){
                 ls
                 cat $KUBECONFIG > .kube/config
                 cp fastapi/values.yaml values.yml
+		echo "Content of values.yml before modification:"    
                 cat values.yml
-                sed -i "s/tag.*/tag: ${DOCKER_TAG}/g" values.yml
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
+		echo "Content of values.yml after modification:"
+		cat values.yml
                 helm upgrade --install app fastapi --values=values.yml --namespace dev
                 '''
                 }
